@@ -28,7 +28,8 @@ interface RouletteState {
   pastGames: PastRouletteGame[];
 }
 
-const socketUri = `${import.meta.env.SOCKET_HOSTNAME}:${import.meta.env.SOCKET_PORT}`;
+const env = import.meta.env;
+const socketUri = `${env.VITE_SOCKET_HOSTNAME}:${env.VITE_SOCKET_PORT}`;
 
 const useRouletteState = create<RouletteState>()(
   devtools((set) => {
