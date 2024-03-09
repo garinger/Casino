@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { Socket, io } from "socket.io-client";
-import { PastRouletteGame } from "../types/PastRouletteGame";
+import { RouletteGame } from "../types/RouletteGame";
 
 interface ServerToClientEvents {
   gameState: (
@@ -11,7 +11,7 @@ interface ServerToClientEvents {
     spinEnd: Date | null,
     spinOffset: number | null,
     nextSpin: Date | null,
-    pastGames: PastRouletteGame[],
+    pastGames: RouletteGame[],
   ) => void;
 }
 
@@ -25,13 +25,13 @@ interface RouletteState {
   spinEnd: Date | null;
   spinOffset: number | null;
   nextSpin: Date | null;
-  pastGames: PastRouletteGame[];
+  pastGames: RouletteGame[];
 }
 
 const env = import.meta.env;
 const socketUri = `${env.VITE_SOCKET_HOSTNAME}:${env.VITE_SOCKET_PORT}`;
 
-const useRouletteState = create<RouletteState>()(
+const useRouletteStore = create<RouletteState>()(
   devtools((set) => {
     const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
       io(socketUri);
@@ -62,4 +62,4 @@ const useRouletteState = create<RouletteState>()(
   }),
 );
 
-export default useRouletteState;
+export default useRouletteStore;

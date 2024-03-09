@@ -8,11 +8,11 @@ export default {
     extend: {
       // prettier-ignore
       colors: {
-        "roulette-black": colors.neutral["600"],
+        "roulette-black": "#313135",
         "roulette-red": colors.red["600"],
         "roulette-green": colors.green["600"],
-        "background": colors.neutral["900"],
-        "dark-background": colors.neutral["950"],
+        "background": "#232326",
+        "dark-background": "#1F1F22",
       },
     },
   },
