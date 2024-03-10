@@ -32,7 +32,7 @@ const rouletteItems = [
   ...pattern,
 ];
 
-function calculatePosition(startPos, endPos, startTime, endTime, currentTime) {
+function calculatePosition(startPos: number, endPos: number, startTime: Date, endTime: Date, currentTime: Date) {
   // Calculate the total duration in milliseconds
   const totalDuration = endTime.getTime() - startTime.getTime();
 
@@ -72,7 +72,7 @@ export default function RouletteBar() {
     itemWidth / 2;
 
   // TODO: Add spin offset.
-  const end = start - (itemWidth + itemGap) * (59 + outcome) - spinOffset;
+  const end = start - (itemWidth + itemGap) * (59 + outcome!) - spinOffset!;
 
   const [position, setPosition] = useState(start);
 
@@ -83,8 +83,8 @@ export default function RouletteBar() {
       calculatePosition(
         start,
         end,
-        new Date(spinStart),
-        new Date(spinEnd),
+        new Date(spinStart!),
+        new Date(spinEnd!),
         new Date(),
       ),
     );
