@@ -21,7 +21,7 @@ export default function RouletteCountdown() {
       calculateTimePercentage(
         new Date().getTime(),
         new Date(nextSpin!).getTime()!,
-        6000,
+        5800,
       ),
     );
   }, 1000 / 144);
