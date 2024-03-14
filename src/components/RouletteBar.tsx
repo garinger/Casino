@@ -32,27 +32,31 @@ const rouletteItems = [
   ...pattern,
 ];
 
-function calculatePosition(startPos: number, endPos: number, startTime: Date, endTime: Date, currentTime: Date) {
-  // Calculate the total duration in milliseconds
-  const totalDuration = endTime.getTime() - startTime.getTime();
+function bezier(
+  t: number,
+  initial: number,
+  p1: number,
+  p2: number,
+  final: number,
+) {
+  return (
+    (1 - t) * (1 - t) * (1 - t) * initial +
+    3 * (1 - t) * (1 - t) * t * p1 +
+    3 * (1 - t) * t * t * p2 +
+    t * t * t * final
+  );
+}
 
-  // Calculate the elapsed time in milliseconds
-  const elapsedTime = currentTime.getTime() - startTime.getTime();
+function calcProgress(startTime: number, currTime: number, endTime: number) {
+  if (currTime < startTime) return 0.0;
 
-  // Ensure that the elapsed time is within the bounds of the start and end time
-  if (elapsedTime < 0) {
-    return startPos;
-  } else if (elapsedTime >= totalDuration) {
-    return endPos;
-  }
+  const curr = currTime - startTime;
+  const end = endTime - startTime;
 
-  // Calculate the proportion of the journey completed
-  const journeyProgress = elapsedTime / totalDuration;
+  const percentage = curr / end;
+  if (percentage > 1) return 1.0;
 
-  // Calculate the current position based on the journey progress
-  const currentPosition = startPos + journeyProgress * (endPos - startPos);
-
-  return currentPosition;
+  return curr / end;
 }
 
 export default function RouletteBar() {
@@ -71,24 +75,20 @@ export default function RouletteBar() {
     middleLineWidth / 2 -
     itemWidth / 2;
 
-  // TODO: Add spin offset.
   const end = start - (itemWidth + itemGap) * (59 + outcome!) - spinOffset!;
 
   const [position, setPosition] = useState(start);
 
-  // TODO: Use performance.now() instead of dates!
-  // TODO: Try a different calculatePosition function.
+  const refreshRate = 1000 / 144;
   useInterval(() => {
-    setPosition(
-      calculatePosition(
-        start,
-        end,
-        new Date(spinStart!),
-        new Date(spinEnd!),
-        new Date(),
-      ),
+    const progress = calcProgress(
+      new Date(spinStart!).getTime(),
+      performance.now() + performance.timeOrigin,
+      new Date(spinEnd!).getTime(),
     );
-  }, 1000 / 144);
+    const newPosition = bezier(progress, start, end + 100, end, end);
+    setPosition(newPosition);
+  }, refreshRate);
 
   return (
     <div className="relative w-3/4 overflow-clip rounded-xl bg-dark-background md:w-2/3 xl:w-1/2">
