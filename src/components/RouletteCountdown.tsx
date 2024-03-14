@@ -16,15 +16,16 @@ export default function RouletteCountdown() {
   const nextSpin = useRouletteStore((state) => state.nextSpin);
   const [progress, setProgress] = useState(1);
 
+  const refreshRate = 1000 / 144;
   useInterval(() => {
     setProgress(
       calculateTimePercentage(
         new Date().getTime(),
         new Date(nextSpin!).getTime()!,
-        5800,
+        6000,
       ),
     );
-  }, 1000 / 144);
+  }, refreshRate);
 
   return (
     <div className="w-3/4 md:w-2/3 xl:w-1/2">
