@@ -7,8 +7,8 @@ interface ServerToClientEvents {
   gameState: (
     outcome: number | null,
     spinning: boolean,
-    spinStart: Date | null,
-    spinEnd: Date | null,
+    spinStart: number | null,
+    spinEnd: number | null,
     spinOffset: number | null,
     nextSpin: number | null,
     pastGames: RouletteGame[],
@@ -22,8 +22,8 @@ interface RouletteState {
   delta: number | null;
   outcome: number | null;
   spinning: boolean;
-  spinStart: Date | null;
-  spinEnd: Date | null;
+  spinStart: number | null;
+  spinEnd: number | null;
   spinOffset: number | null;
   nextSpin: number | null;
   pastGames: RouletteGame[];

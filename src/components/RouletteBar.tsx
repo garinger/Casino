@@ -60,6 +60,7 @@ function calcProgress(startTime: number, currTime: number, endTime: number) {
 }
 
 export default function RouletteBar() {
+  const delta = useRouletteStore((state) => state.delta);
   const spinStart = useRouletteStore((state) => state.spinStart);
   const spinEnd = useRouletteStore((state) => state.spinEnd);
   const outcome = useRouletteStore((state) => state.outcome);
@@ -82,9 +83,9 @@ export default function RouletteBar() {
   const refreshRate = 1000 / 144;
   useInterval(() => {
     const progress = calcProgress(
-      new Date(spinStart!).getTime(),
+      spinStart! + delta!,
       performance.now() + performance.timeOrigin,
-      new Date(spinEnd!).getTime(),
+      spinEnd! + delta!,
     );
     const newPosition = bezier(progress, start, end + 100, end, end);
     setPosition(newPosition);
