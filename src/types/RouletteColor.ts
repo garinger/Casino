@@ -1,5 +1,5 @@
 export enum RouletteColor {
-  BLACK,
-  RED,
-  GREEN,
+  BLACK = "Black",
+  RED = "Red",
+  GREEN = "Green",
 }

@@ -1,6 +1,7 @@
 import PastOutcomeList from "./components/PastOutcomeList";
 import RouletteBar from "./components/RouletteBar";
 import RouletteCountdown from "./components/RouletteCountdown";
+import BetArea from "./components/BetArea";
 
 export default function App() {
   return (
@@ -8,6 +9,7 @@ export default function App() {
       <PastOutcomeList />
       <RouletteBar />
       <RouletteCountdown />
+      <BetArea />
     </div>
   );
 }

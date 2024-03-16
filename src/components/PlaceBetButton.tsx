@@ -4,7 +4,7 @@ type Props = {
   color: RouletteColor;
 };
 
-export default function RouletteItem({ color }: Props) {
+export default function PlaceBetButton({ color }: Props) {
   const bg =
     color === RouletteColor.GREEN
       ? "bg-roulette-green"
@@ -12,5 +12,9 @@ export default function RouletteItem({ color }: Props) {
         ? "bg-roulette-red"
         : "bg-roulette-black";
 
-  return <div className={`${bg} h-16 min-w-16 rounded-lg`}></div>;
+  return (
+    <button className={`${bg} w-full rounded-md p-3 text-neutral-100`}>
+      Place Bet
+    </button>
+  );
 }
