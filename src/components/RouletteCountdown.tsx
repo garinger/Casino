@@ -20,7 +20,7 @@ export default function RouletteCountdown() {
   const refreshRate = 1000 / 144;
   useInterval(() => {
     console.log(delta);
-    setProgress(calculateTimePercentage(Date.now() + delta!, nextSpin!, 6000));
+    setProgress(calculateTimePercentage(Date.now(), nextSpin! + delta!, 6000));
   }, refreshRate);
 
   return (
