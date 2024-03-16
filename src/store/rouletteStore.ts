@@ -10,7 +10,7 @@ interface ServerToClientEvents {
     spinStart: Date | null,
     spinEnd: Date | null,
     spinOffset: number | null,
-    nextSpin: Date | null,
+    nextSpin: number | null,
     pastGames: RouletteGame[],
   ) => void;
 }
@@ -24,7 +24,7 @@ interface RouletteState {
   spinStart: Date | null;
   spinEnd: Date | null;
   spinOffset: number | null;
-  nextSpin: Date | null;
+  nextSpin: number | null;
   pastGames: RouletteGame[];
 }
 
