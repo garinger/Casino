@@ -13,12 +13,14 @@ function calculateTimePercentage(
 }
 
 export default function RouletteCountdown() {
+  const delta = useRouletteStore((state) => state.delta);
   const nextSpin = useRouletteStore((state) => state.nextSpin);
   const [progress, setProgress] = useState(1);
 
   const refreshRate = 1000 / 144;
   useInterval(() => {
-    setProgress(calculateTimePercentage(Date.now(), nextSpin!, 6000));
+    console.log(delta);
+    setProgress(calculateTimePercentage(Date.now() + delta!, nextSpin!, 6000));
   }, refreshRate);
 
   return (
