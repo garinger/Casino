@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import RouletteItem from "./RouletteItem";
 import useRouletteStore from "../store/rouletteStore";
 import useInterval from "../hooks/useInterval";
 import { RouletteColor } from "../types/RouletteColor";
+import RouletteBarMiddleLine from "./RouletteBarMiddleLine";
+import useSound from "use-sound";
+import tick from "../assets/sounds/tick.mp3";
 
 const pattern = [
   RouletteColor.BLACK,
@@ -91,15 +94,56 @@ export default function RouletteBar() {
     setPosition(newPosition);
   }, refreshRate);
 
+  const [hoveredItem, setHoveredItem] = useState<number>(0);
+  const barRef = useRef<HTMLDivElement>(null);
+  const middleLineRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<HTMLDivElement[]>([]);
+  const [play] = useSound(tick);
+
+  useEffect(() => {
+    const checkOverlap = () => {
+      if (!middleLineRef.current || !barRef.current) return;
+
+      const middleLineRect = middleLineRef.current?.getBoundingClientRect();
+
+      if (itemRefs.current)
+        for (let i = 0; i < itemRefs.current.length; i++) {
+          const itemRect = itemRefs.current[i].getBoundingClientRect();
+
+          if (
+            middleLineRect.left < itemRect.right &&
+            middleLineRect.right > itemRect.left &&
+            middleLineRect.top < itemRect.bottom &&
+            middleLineRect.bottom > itemRect.top
+          ) {
+            setHoveredItem(i);
+            return;
+          }
+        }
+    };
+
+    checkOverlap();
+  }, [position]);
+
+  useEffect(() => {
+    play();
+  }, [hoveredItem]);
+
   return (
     <div className="relative w-3/4 overflow-clip rounded-xl bg-dark-background md:w-2/3 xl:w-1/2">
-      <div className="absolute bottom-0 left-1/2 right-0 top-0 z-50 h-full w-1 bg-white"></div>
+      <RouletteBarMiddleLine ref={middleLineRef} />
       <div
-        className="flex justify-center gap-2 py-4 will-change-transform"
+        className="flex items-center justify-center gap-2 py-4 will-change-transform"
         style={{ transform: `translateX(${position}px)` }}
+        ref={barRef}
       >
         {rouletteItems.map((color: RouletteColor, index) => (
-          <RouletteItem key={index} color={color} />
+          <RouletteItem
+            key={index}
+            color={color}
+            hovered={hoveredItem === index}
+            ref={(el: HTMLDivElement) => (itemRefs.current[index] = el)}
+          />
         ))}
       </div>
     </div>
